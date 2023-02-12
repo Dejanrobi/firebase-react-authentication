@@ -1,24 +1,23 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Signup from './Components/Signup/Signup';
+import { Container } from 'react-bootstrap';
+import AuthProvider from './Context/AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // Everything wrapped inside the authProvider to have access to the context
+    <AuthProvider>
+      <Container className='d-flex align-items-center justify-content-center' 
+      style={{minHeight: "100vh"}}
+      >
+        <div className='w-100' style={{maxWidth: '400px'}}>
+          <Signup/>
+        </div>      
+      </Container>
+    </AuthProvider>
+    
+    
   );
 }
 
