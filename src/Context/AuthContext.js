@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import React, { useContext, useEffect, useState } from 'react'
 // importing the auth module
 import { auth } from "../firebase";
@@ -15,19 +15,37 @@ export function useAuth(){
 const AuthProvider = ({children}) => {
     // setting the currentUser
     const [currentUser, setCurrentUser] = useState();
+    const [load, setLoad] = useState(true);
 
-    // Signing up the user usin the auth module
-    
+    // Signing up the user using the auth module  
     function signup(email, password){ 
         const userResponse  = createUserWithEmailAndPassword(auth, email, password);
         return userResponse;                         
     }
 
+    //Login User with email and password.
+     function login(email, password){
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    // Logout function
+
+    function logout(){
+        // calling the signout function
+        return signOut(auth);
+    }
+
+
+
+
     // checking whether we have a user
     useEffect(()=>{        
         // using the onAuthStateChanged to check whether we have a user
         const unsubscribe = onAuthStateChanged(auth, (user) =>{
+               
             setCurrentUser(user)
+            // initial Loading (sets loading to false because the onAuthState changed was carried out and the user was found then set )
+            setLoad(false);
             console.log(user);
         })
         
@@ -43,11 +61,15 @@ const AuthProvider = ({children}) => {
     // using the signup, pass it as part of our authcontext
     const value = {
         currentUser,
-        signup
+        signup,
+        login,
+        logout,
+        load
     }
 
   return (
     // using the authContext inside the provider (and returning a value)
+    // if we are not loading, we render out the children but if we are, we do not render out the children
     <AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>

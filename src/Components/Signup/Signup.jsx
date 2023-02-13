@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../Context/AuthContext';
 
@@ -9,10 +10,13 @@ const Signup = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const { currentUser, signup} = useAuth();
+    const { signup } = useAuth();
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    // Navigate Hook
+    const navigate = useNavigate();
 
     // console.log(curentUser?)
 
@@ -30,7 +34,10 @@ const Signup = () => {
         try {
             setError('')
             setLoading(true)
-            await signup(emailRef.current.value, passwordRef.current.value);            
+            await signup(emailRef.current.value, passwordRef.current.value); 
+            
+            // Navigate to dashboard after  signup
+            navigate("/");
         } catch (error) {
             setError("Failed to create an account")
             
@@ -50,7 +57,7 @@ const Signup = () => {
         <Card>
             <Card.Body>
                 <h2 className='text-center mb-4'>Sign Up</h2>
-                {JSON.stringify(currentUser)}
+                
                 {error &&   <Alert variant='danger'>{error}</Alert>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group id="email">
@@ -71,7 +78,7 @@ const Signup = () => {
             </Card.Body>
         </Card>
         <div className='w-100 text-center mt-2'>
-            Already have an account? Log In
+            Already have an account? <Link to="/login">Log In</Link>
         </div>
       
     </>
