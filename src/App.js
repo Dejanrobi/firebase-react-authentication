@@ -8,6 +8,8 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import Login from './Components/Login/Login';
 import PrivateRoute from './PrivateRoute.';
 import Loading from './Components/Loading Page/Loading';
+import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
+import UpdateProfile from './Components/UpdateProfile/UpdateProfile';
 
 function App() {
   const { load, currentUser } = useAuth();
@@ -34,6 +36,7 @@ function App() {
                     <Route exact path='/' element={<Login/>}/>
                     <Route path="/signup" element={<Signup/>} />
                     <Route path="/login" element={<Login/>} />
+                    <Route path="forgot-password" element={<ForgotPassword/>}/>
                   </Routes>
 
                 ):(
@@ -41,6 +44,7 @@ function App() {
                     <Route exact path='/' element={<Dashboard/>}/>
                     <Route path="/signup" element={<Navigate to="/"/>} />
                     <Route path="/login" element={<Navigate to="/"/>} />
+                    <Route path="/update-profile" element={<UpdateProfile/>} />
                   </Routes>
 
                 )
